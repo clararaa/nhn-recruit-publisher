@@ -135,5 +135,14 @@ export function parseJobPosting(text: string): Section[] {
     });
   }
 
+  // "합류 여정" 섹션: "합류가이드 확인하기" 삭제
+  for (const section of sections) {
+    if (section.title.includes('합류 여정')) {
+      section.content = section.content.filter(
+        (item) => !item.value.includes('합류가이드') && !item.value.includes('합류 가이드')
+      );
+    }
+  }
+
   return sections;
 }
