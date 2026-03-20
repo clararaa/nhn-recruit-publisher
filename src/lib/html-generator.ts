@@ -80,18 +80,23 @@ function renderContentItems(items: ContentItem[]): string {
   const flushBullets = () => {
     if (bulletBuffer.length === 0) return;
     const lis = bulletBuffer
-      .map(
-        (item) =>
-          `<li style="${STYLES.listItem}"><span style="${STYLES.bullet}">&#8226;</span>${escapeHtml(item.value)}</li>`
-      )
+      .map((item) => {
+        if (item.type === 'red-bullet') {
+          return `<li style="font-size:16px;color:#dc2626;margin:0 0 8px 0;padding:0;line-height:1.8;"><span style="color:#dc2626;margin-right:6px;">&#8226;</span>${escapeHtml(item.value)}</li>`;
+        }
+        return `<li style="${STYLES.listItem}"><span style="${STYLES.bullet}">&#8226;</span>${escapeHtml(item.value)}</li>`;
+      })
       .join('\n');
     parts.push(`<ul style="${STYLES.list}">\n${lis}\n</ul>`);
     bulletBuffer = [];
   };
 
   for (const item of items) {
-    if (item.type === 'bullet') {
+    if (item.type === 'bullet' || item.type === 'red-bullet') {
       bulletBuffer.push(item);
+    } else if (item.type === 'red-text') {
+      flushBullets();
+      parts.push(`<p style="font-size:16px;color:#dc2626;margin:0 0 8px 0;padding:0;line-height:1.8;">${escapeHtml(item.value)}</p>`);
     } else {
       flushBullets();
       parts.push(`<p style="${STYLES.paragraph}">${escapeHtml(item.value)}</p>`);

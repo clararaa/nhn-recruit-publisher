@@ -1,5 +1,5 @@
 export interface ContentItem {
-  type: 'bullet' | 'text';
+  type: 'bullet' | 'text' | 'red-bullet' | 'red-text';
   value: string;
 }
 
@@ -135,12 +135,26 @@ export function parseJobPosting(text: string): Section[] {
     });
   }
 
-  // "합류 여정" 섹션: "합류가이드 확인하기" 삭제
+  // "합류 여정" 섹션: "합류가이드" 삭제 + "입사" 이후 불릿은 빨간색
   for (const section of sections) {
     if (section.title.includes('합류 여정')) {
       section.content = section.content.filter(
         (item) => !item.value.includes('합류가이드') && !item.value.includes('합류 가이드')
       );
+      let afterEntry = false;
+      section.content = section.content.map((item) => {
+        if (!afterEntry && item.value.includes('입사')) {
+          afterEntry = true;
+          return item;
+        }
+        if (afterEntry && item.type === 'bullet') {
+          return { ...item, type: 'red-bullet' as const };
+        }
+        if (afterEntry && item.type === 'text') {
+          return { ...item, type: 'red-text' as const };
+        }
+        return item;
+      });
     }
   }
 
