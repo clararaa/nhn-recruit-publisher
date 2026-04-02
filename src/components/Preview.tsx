@@ -41,7 +41,7 @@ export default function Preview({ html }: PreviewProps) {
       for (let i = 0; i < 3; i++) {
         try {
           dataUrl = await toPng(previewRef.current, {
-            pixelRatio: 2,
+            pixelRatio: 1,
             backgroundColor: '#ffffff',
             cacheBust: true,
             skipAutoScale: true,
