@@ -1,6 +1,6 @@
 import { Section, ContentItem } from './parser';
 
-const WIDTH = '792px';
+const WIDTH = '850px';
 
 const STYLES = {
   container: `
