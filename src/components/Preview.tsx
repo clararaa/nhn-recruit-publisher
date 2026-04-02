@@ -40,16 +40,24 @@ export default function Preview({ html }: PreviewProps) {
       let dataUrl = '';
       for (let i = 0; i < 3; i++) {
         try {
-          dataUrl = await toPng(previewRef.current, {
+          // 이미지 생성 전 너비를 792px로 강제 고정
+          const el = previewRef.current;
+          const originalWidth = el.style.width;
+          el.style.width = '792px';
+
+          dataUrl = await toPng(el, {
             pixelRatio: 1,
             backgroundColor: '#ffffff',
             cacheBust: true,
             skipAutoScale: true,
+            width: 792,
             filter: (node: HTMLElement) => {
-              // 숨겨진 요소 제외
               return node.tagName !== 'NOSCRIPT';
             },
           });
+
+          // 원래 너비 복원
+          el.style.width = originalWidth;
           if (dataUrl && dataUrl !== 'data:,') break;
         } catch {
           // retry
