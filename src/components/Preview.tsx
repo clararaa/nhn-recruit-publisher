@@ -40,10 +40,10 @@ export default function Preview({ html }: PreviewProps) {
       let dataUrl = '';
       for (let i = 0; i < 3; i++) {
         try {
-          // 이미지 생성 전 너비를 850px로 강제 고정
+          // 이미지 생성 전 너비를 792px로 강제 고정
           const el = previewRef.current;
           const originalWidth = el.style.width;
-          el.style.width = '850px';
+          el.style.width = '792px';
 
           dataUrl = await toPng(el, {
             pixelRatio: 1,
