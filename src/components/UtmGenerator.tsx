@@ -13,6 +13,7 @@ const PLATFORMS = [
   { name: '캐치', source: 'catch' },
   { name: '슈퍼루키', source: 'superrookie' },
   { name: '잡코리아', source: 'jobkorea' },
+  { name: '인크루트', source: 'incruit' },
 ];
 
 interface UtmLink {
